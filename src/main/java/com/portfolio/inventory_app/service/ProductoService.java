@@ -13,25 +13,27 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // Obtener todos los productos
     public List<Producto> listAll() {
-        return productoRepository.findAll();
+        return productoRepository.findAll().stream()
+                .filter(p -> Boolean.TRUE.equals(p.getActivo()))
+                .toList();
     }
 
-    // Guardar un producto con una regla de negocio simple
     public Producto save(Producto product) {
-        // Ejemplo de lógica: Asegurar que el nombre esté en mayúsculas
         product.setNombre(product.getNombre().toUpperCase());
         return productoRepository.save(product);
     }
 
-    // Buscar por ID
     public Producto getById(Long id) {
         return productoRepository.findById(id).orElse(null);
     }
 
-    // Eliminar
     public void delete(Long id) {
-        productoRepository.deleteById(id);
+        Producto p = productoRepository.findById(id).orElse(null);
+        if (p != null) {
+            p.setActivo(false);
+            productoRepository.save(p);
+        }
     }
+
 }

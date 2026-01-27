@@ -1,10 +1,12 @@
 package com.portfolio.inventory_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,8 @@ public class Producto {
 
     private String descripcion;
 
+    private Boolean activo= true;
+
     @DecimalMin(value = "0.1", message = "El precio debe ser mayor a 0")
     @Column(nullable = false)
     private BigDecimal precio;
@@ -36,5 +40,13 @@ public class Producto {
 
     @Column(name = "codigo_barras", unique = true)
     private String codigoBarras;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "category_id", nullable = true)
+    @JsonIgnoreProperties("productos")
+    private Category categoria;
+
+    @Column(name = "marca")
+    private String marca;
 
 }
