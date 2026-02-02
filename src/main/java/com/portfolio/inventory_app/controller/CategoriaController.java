@@ -1,7 +1,7 @@
 package com.portfolio.inventory_app.controller;
 
 import com.portfolio.inventory_app.model.Category;
-import com.portfolio.inventory_app.repository.CategoriaRepositorio;
+import com.portfolio.inventory_app.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CategoriaController {
 
     @Autowired
-    private CategoriaRepositorio categoriaRepository;
+    private CategoriaRepository categoriaRepository;
 
     @GetMapping
     public List<Category> gettAll(){
