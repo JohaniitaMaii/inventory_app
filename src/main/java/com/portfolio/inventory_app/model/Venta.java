@@ -23,6 +23,7 @@ public class Venta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private LocalDateTime fecha = LocalDateTime.now();
 
     private BigDecimal total;

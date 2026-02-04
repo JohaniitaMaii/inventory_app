@@ -26,9 +26,9 @@ public class VentaService {
 
         Empleado empleado = empleadoRepository.findById(venta.getEmpleado().getId())
                 .orElseThrow(() -> new RuntimeException("Personal no encontrado"));
-        if (!empleado.puedeVender()) {
-            throw new RuntimeException("El empleado no tiene los permisos o la disponibilidad para vender.");
-        }
+//        if (!empleado.getPuesto().equals("VENDEDOR")) {
+//            throw new RuntimeException("El empleado no tiene los permisos o la disponibilidad para vender.");
+//        }
         Cliente cliente = clienteRepository.findById(venta.getCliente().getId())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         venta.setEmpleado(empleado);

@@ -17,11 +17,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class Empleado extends Usuario {
 
-    @ManyToOne
-    @JoinColumn(name = "sector_id")
-    private Sector sector;
-
-    @JoinColumn(name = "cargo_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "puesto_id")
     private Puesto puesto;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,7 +48,7 @@ public class Empleado extends Usuario {
     private Double objetivoMensual;
     private String obraSocial;
 
-    @Column(length = 22)
+    @Column(unique= true,length = 22)
     private String cbu;
 
 //    public boolean puedeVender() {

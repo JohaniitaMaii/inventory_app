@@ -27,10 +27,10 @@ public class Usuario {
     @Column (unique = true, nullable = false)
     private String email;
 
-    private Long telefono;
+    private String telefono;
 
     @Column (unique = true, nullable = false)
-    private Long cuit_dni;
+    private String cuit_dni;
 
     private Boolean estado;
 

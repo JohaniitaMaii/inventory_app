@@ -3,8 +3,10 @@ package com.portfolio.inventory_app.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
-@Table (name = "puesto")
+@Table(name = "puesto")
 @Data
 public class Puesto {
 
@@ -13,4 +15,11 @@ public class Puesto {
     private Long id;
 
     private String nombre;
+
+    @ManyToOne
+    @JoinColumn(name = "sector_id")
+    private Sector sector;
+
+    @OneToMany(mappedBy = "puesto")
+    private List<Empleado> empleados;
 }

@@ -1,6 +1,6 @@
 package com.portfolio.inventory_app.controller;
 
-import com.portfolio.inventory_app.model.Category;
+import com.portfolio.inventory_app.model.CategoriaProductos;
 import com.portfolio.inventory_app.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,18 @@ public class CategoriaController {
     private CategoriaRepository categoriaRepository;
 
     @GetMapping
-    public List<Category> gettAll(){
+    public List<CategoriaProductos> gettAll(){
         return categoriaRepository.findByActivoTrue();
     }
 
     @PostMapping
-    public ResponseEntity<Category> create(@RequestBody Category categoria){
+    public ResponseEntity<CategoriaProductos> create(@RequestBody CategoriaProductos categoria){
         return new ResponseEntity<>(categoriaRepository.save(categoria), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        Category c = categoriaRepository.findById(id).orElse(null);
+        CategoriaProductos c = categoriaRepository.findById(id).orElse(null);
         if(c != null){
             c.setActivo(false);
             categoriaRepository.save(c);
