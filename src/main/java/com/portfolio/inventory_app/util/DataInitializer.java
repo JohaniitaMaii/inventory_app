@@ -40,7 +40,7 @@ public class DataInitializer implements CommandLineRunner {
             Empleado admin = new Empleado();
             admin.setNombre("Admin");
             admin.setEmail("admin@saas.com");
-            admin.setCuit_dni("20123456789"); // Como String, según lo charlado
+            admin.setCuitDni("20123456789"); // Como String, según lo charlado
             admin.setTelefono("123456789");   // Como String
             admin.setRol(Rol.SUPER_ADMIN);
             admin.setPuesto(vendedor);

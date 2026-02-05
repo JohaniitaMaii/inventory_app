@@ -44,7 +44,7 @@ public class Producto {
     @ManyToOne(optional = true)
     @JoinColumn(name = "category_id", nullable = true)
     @JsonIgnoreProperties("productos")
-    private CategoriaProductos categoria;
+    private CategoriaProductos categoriaProductos;
 
     @Column(name = "marca")
     private String marca;

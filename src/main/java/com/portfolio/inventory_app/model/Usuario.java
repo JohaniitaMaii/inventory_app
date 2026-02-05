@@ -30,7 +30,7 @@ public class Usuario {
     private String telefono;
 
     @Column (unique = true, nullable = false)
-    private String cuit_dni;
+    private String cuitDni;
 
     private Boolean estado;
 

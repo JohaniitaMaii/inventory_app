@@ -2,6 +2,7 @@ package com.portfolio.inventory_app.service;
 
 import com.portfolio.inventory_app.model.Producto;
 import com.portfolio.inventory_app.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class ProductoService {
     }
 
     public Producto getById(Long id) {
-        return productoRepository.findById(id).orElse(null);
+        return productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
 
     public Producto update(Long id, Producto productoDetalles) {
@@ -39,7 +41,7 @@ public class ProductoService {
         p.setNombre(productoDetalles.getNombre());
         p.setDescripcion(productoDetalles.getDescripcion());
         p.setMarca(productoDetalles.getMarca());
-        p.setCategoria(productoDetalles.getCategoria());
+        p.setCategoriaProductos(productoDetalles.getCategoriaProductos());
         p.setPrecio(productoDetalles.getPrecio());
         p.setStock(productoDetalles.getStock());
         p.setActivo(productoDetalles.getActivo());
@@ -56,7 +58,7 @@ public class ProductoService {
     }
 
     public List<Producto> findByCategoria(Long id) {
-        return productoRepository.findByCategoriaId(id);
+        return productoRepository.findByCategoriaProductos(id);
     }
 
     public List<Producto> findByMarca(String marca) {
@@ -66,4 +68,26 @@ public class ProductoService {
     public List<Producto> findByNombre(String nombre) {
         return productoRepository.findByNombreContainingIgnoreCase(nombre);
     }
+
+    @Transactional
+    public void actualizarStock(Long id, Integer cantidad, boolean esIncremento) {
+
+        Producto p = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe el producto con el id: " + id));
+
+        int nuevoStock;
+        if (esIncremento) {
+            nuevoStock = p.getStock() + cantidad;
+        } else {
+            if (p.getStock() < cantidad) {
+                throw new RuntimeException("Stock insuficiente para: " + p.getNombre());
+            }
+            nuevoStock = p.getStock() - cantidad;
+        }
+
+        p.setStock(nuevoStock);
+        productoRepository.save(p);
+    }
+
+
 }
