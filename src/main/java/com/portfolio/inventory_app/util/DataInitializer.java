@@ -2,6 +2,7 @@ package com.portfolio.inventory_app.util;
 
 import com.portfolio.inventory_app.model.*;
 import com.portfolio.inventory_app.model.enums.CategoriaFiscal;
+import com.portfolio.inventory_app.model.enums.Disponibilidad;
 import com.portfolio.inventory_app.model.enums.Rol;
 import com.portfolio.inventory_app.model.enums.TipoCliente;
 import com.portfolio.inventory_app.repository.*;
@@ -138,6 +139,7 @@ public class DataInitializer implements CommandLineRunner {
             v.setDomicilio("Av Siempre Viva 87" + i);
             v.setIngreso(new Date());
             v.setEstado(true);
+            v.setDisponibilidad(Disponibilidad.PRESENTE);
             v.setTelefono("1231231" + i);
             v.setLegajo("V-00" + i);
             v.setSalarioBase(50000.0);

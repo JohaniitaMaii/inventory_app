@@ -1,7 +1,6 @@
 package com.portfolio.inventory_app.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "venta_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("detalles")
     private Venta venta;
 
     @ManyToOne

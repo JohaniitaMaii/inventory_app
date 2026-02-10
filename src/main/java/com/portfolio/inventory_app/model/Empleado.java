@@ -1,5 +1,6 @@
 package com.portfolio.inventory_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.portfolio.inventory_app.model.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class Empleado extends Usuario {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "puesto_id")
+    @JsonIgnoreProperties("empleados")
     private Puesto puesto;
 
     @Temporal(TemporalType.TIMESTAMP)
