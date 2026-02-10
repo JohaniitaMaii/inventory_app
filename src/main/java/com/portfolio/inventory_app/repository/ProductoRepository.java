@@ -13,13 +13,16 @@ import java.util.Optional;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     Optional<Producto> findByCodigoBarras(String codigoBarras);
-    List<Producto> findByMarca(String marca);
+    boolean existsByCodigoBarras(String codigoBarras);
+
     List<Producto> findByActivoTrue();
     List<Producto> findByActivoFalse();
-    List<Producto> findByCategoriaProductos(Long categoriaId);
-    List<Producto> findByMarcaContainingIgnoreCase(String marca);
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
-    @Query("SELECT p FROM Producto p WHERE p.stock <= :minimo")
-    List<Producto> findProductosBajoStock(@Param("minimo") Integer minimo);
-    boolean existsByCodigoBarras(String codigoBarras);
+    List<Producto> findByMarcaContainingIgnoreCase(String marca);
+
+    List<Producto> findByCategoriaProductos_Id(Long categoriaId);
+
+    @Query("SELECT p FROM Producto p WHERE p.stockActual <= p.stockMinimo AND p.activo = true")
+    List<Producto> findProductosEnAlertaStock();
+
 }

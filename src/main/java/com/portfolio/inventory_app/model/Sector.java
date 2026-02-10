@@ -2,7 +2,9 @@ package com.portfolio.inventory_app.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "sector")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sector {
 
     @Id
@@ -20,4 +24,8 @@ public class Sector {
 
     @OneToMany(mappedBy = "sector", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Puesto> puestos = new ArrayList<>();
+
+    public Sector(String nombre) {
+        this.nombre = nombre;
+    }
 }

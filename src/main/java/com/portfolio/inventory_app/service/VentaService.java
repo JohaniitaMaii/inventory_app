@@ -8,47 +8,53 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class VentaService {
 
-    @Autowired
-    private VentaRepository ventaRepository;
-    @Autowired
-    private EmpleadoService empleadoService;
-    @Autowired
-    private ProductoService productoService;
-    @Autowired
-    private ClienteService clienteService; // Lo cambiaremos a ClienteService pronto
+    @Autowired private VentaRepository ventaRepository;
+    @Autowired private EmpleadoService empleadoService;
+    @Autowired private ClienteService clienteService;
+    @Autowired private DetalleVentaService detalleVentaService;
+
+    public List<Venta> listAll() {
+        return ventaRepository.findAll();
+    }
+
+    public Venta findById(Long id) {
+        return ventaRepository.findById(id).get();
+    }
+
 
     @Transactional
     public Venta registrarVenta(Venta venta) {
-
-        Empleado vendedor = empleadoService.obtenerVendedor(venta.getEmpleado().getId());
-        Cliente cliente = clienteService.getById(venta.getCliente().getId());
-
+        Empleado vendedor = empleadoService.validarVendedor(venta.getEmpleado().getId());
+        Cliente cliente = clienteService.validarClienteParaVenta(venta.getCliente().getId());
         venta.setEmpleado(vendedor);
         venta.setCliente(cliente);
         venta.setFecha(LocalDateTime.now());
-
-        BigDecimal totalVenta = procesarLineasDeVenta(venta);
-        venta.setTotal(totalVenta);
-
+        if (venta.getDetalles() == null || venta.getDetalles().isEmpty()) {
+            throw new RuntimeException("Error: Una venta debe tener al menos un producto.");
+        }
+        BigDecimal totalAcumulado = BigDecimal.ZERO;
+        for (DetalleVenta detalle : venta.getDetalles()) {
+            BigDecimal subtotal = detalleVentaService.procesarLinea(detalle, venta);
+            totalAcumulado = totalAcumulado.add(subtotal);
+        }
+        venta.setTotal(totalAcumulado);
         return ventaRepository.save(venta);
     }
 
-    private BigDecimal procesarLineasDeVenta(Venta venta) {
-        BigDecimal acumulado = BigDecimal.ZERO;
-
-        for (DetalleVenta detalle : venta.getDetalles()) {
-            productoService.actualizarStock(detalle.getProducto().getId(), detalle.getCantidad(), false);
-            Producto p = productoService.getById(detalle.getProducto().getId());
-            detalle.setVenta(venta);
-            detalle.setPrecioUnitario(p.getPrecio());
-            BigDecimal subtotal = p.getPrecio().multiply(new BigDecimal(detalle.getCantidad()));
-            acumulado = acumulado.add(subtotal);
-        }
-        return acumulado;
+    public List<Venta> findByEmpleadoId(Long empleadoId) {
+        return ventaRepository.findByEmpleado_Id(empleadoId);
     }
 
+    public List<Venta> findByClienteId(Long clienteId) {
+        return ventaRepository.findByCliente_Id(clienteId);
+    }
+
+    public List<Venta> findByRangoFechas(LocalDateTime inicio, LocalDateTime fin) {
+        return ventaRepository.findByFechaBetween(inicio, fin);
+    }
 }

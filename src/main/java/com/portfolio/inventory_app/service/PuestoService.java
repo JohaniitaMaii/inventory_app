@@ -5,17 +5,84 @@ import com.portfolio.inventory_app.repository.PuestoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PuestoService {
 
     @Autowired private PuestoRepository puestoRepository;
 
-    public void validarVendedor(Puesto puesto) {
-        if (puesto == null || !"VENDEDOR".equalsIgnoreCase(puesto.getNombre())) {
-            throw new RuntimeException("El puesto no es valido para realizar una venta");
-        }
-        if (puesto.getSector() == null ) {
-            throw new RuntimeException("El puesto no pertenece al Sector Comercial/Ventas");
+    public List<Puesto> listAll() {
+        return puestoRepository.findAll();
+    }
+
+    public void validarCapacidadDeVenta(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeVender()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos de venta en el Sector " +
+                    puesto.getSector().getNombre() + ".");
         }
     }
+
+    public void validarCapacidadGestionInventario(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeGestionarInventario()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos de Gestión de Inventario en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    public void validarCapacidadGestionEmpleados(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeGestionarEmpleados()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos de Gestión de Empleados en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    public void validarCapacidadReportesSensibles(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeVerReportesSensibles()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos para ver Reportes Sensibles en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    public void validarCapacidadGestionClientes(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeGestionarClientes()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos para Gestionar Clientes en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    public void validarCapacidadRealizarMantenimiento(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeRealizarMantenimiento()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos para Realizar Mantenimiento en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    public void validarCapacidadConfigSistema(Puesto puesto) {
+        asegurarPuesto(puesto);
+        if (!puesto.isPuedeConfigurarSistema()) {
+            throw new RuntimeException("Acceso Denegado: El puesto '" + puesto.getNombre() +
+                    "' no cuenta con permisos para Configurar el Sistema en el Sector " +
+                    puesto.getSector().getNombre() + ".");
+        }
+    }
+
+    private void asegurarPuesto(Puesto puesto) {
+        if (puesto == null) {
+            throw new RuntimeException("Error crítico: El empleado no posee un puesto configurado.");
+        }
+    }
+
 }

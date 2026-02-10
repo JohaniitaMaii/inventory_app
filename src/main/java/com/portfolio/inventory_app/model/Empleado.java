@@ -51,9 +51,4 @@ public class Empleado extends Usuario {
     @Column(unique= true,length = 22)
     private String cbu;
 
-//    public boolean puedeVender() {
-//        return Sector.VENTA_COMERCIAL.equals(this.cargo) &&
-//                this.getEstado() &&
-//                Disponibilidad.PRESENTE.equals(this.disponibilidad);
-//    }
 }

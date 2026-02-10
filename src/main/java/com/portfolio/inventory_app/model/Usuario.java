@@ -2,17 +2,13 @@ package com.portfolio.inventory_app.model;
 
 import com.portfolio.inventory_app.model.enums.Rol;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @MappedSuperclass
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public abstract class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +28,8 @@ public class Usuario {
     @Column (unique = true, nullable = false)
     private String cuitDni;
 
-    private Boolean estado;
-
+    @Column(name = "estado")
+    private boolean estado= true;
 
 
 }

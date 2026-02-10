@@ -1,69 +1,67 @@
 package com.portfolio.inventory_app.controller;
 
+
 import com.portfolio.inventory_app.model.Producto;
 import com.portfolio.inventory_app.service.ProductoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/productos")
+@CrossOrigin(value = "http://localhost:4200")
 public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
 
+    // 1. Listar todos los activos (para la vista de venta)
     @GetMapping
-    public List<Producto> getAll() {
-        return productoService.listAll();
+    public ResponseEntity<List<Producto>> listarActivos() {
+        return ResponseEntity.ok(productoService.listActivos());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Producto> getById(@PathVariable Long id) {
-        Producto producto = productoService.getById(id);
-        if (producto != null) {
-            return new ResponseEntity<>(producto, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping
-    public ResponseEntity<Producto> create(@RequestBody Producto producto) {
-        Producto savedProducto = productoService.save(producto);
-        return new ResponseEntity<>(savedProducto, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Producto> update(@PathVariable Long id, @RequestBody Producto producto) {
-        try {
-            Producto actualizado = productoService.update(id, producto);
-            return new ResponseEntity<>(actualizado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productoService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/marca/{marca}")
-    public List<Producto> getByMarca(@PathVariable String marca) {
-        return productoService.findByMarca(marca);
-    }
-
-    @GetMapping("/categoria/{id}")
-    public List<Producto> getByCategoria(@PathVariable Long id) {
-        return productoService.findByCategoria(id);
-    }
-
+    // 2. Buscar por ID o por Código de Barras (Lectura Rápida)
+    // URL: /api/productos/buscar?codigo=123456
     @GetMapping("/buscar")
-    public List<Producto> searchByNombre(@RequestParam String nombre) {
-        return productoService.findByNombre(nombre);
+    public ResponseEntity<Producto> buscarProducto(@RequestParam String codigo) {
+        try {
+            // Intentamos buscar por código de barras primero
+            return ResponseEntity.ok(productoService.buscarPorCodigoBarras(codigo));
+        } catch (Exception e) {
+            // Si no lo encuentra por barras, el Service podría intentar por ID
+            return ResponseEntity.ok(productoService.getById(Long.parseLong(codigo)));
+        }
     }
+
+    // 3. Crear nuevo producto (con lógica de margen/costo)
+    @PostMapping
+    public ResponseEntity<Producto> guardar(@RequestBody Producto producto) {
+        return new ResponseEntity<>(productoService.save(producto), HttpStatus.CREATED);
+    }
+
+    // 4. Actualización de precio express (Solo precio)
+    @PatchMapping("/{id}/precio")
+    public ResponseEntity<Void> actualizarPrecio(@PathVariable Long id, @RequestParam BigDecimal nuevoPrecio) {
+        productoService.actualizarPrecio(id, nuevoPrecio);
+        return ResponseEntity.noContent().build();
+    }
+
+    // 5. Alertas de Stock Bajo (Para tu panel de analíticas)
+    @GetMapping("/alertas-stock")
+    public ResponseEntity<List<Producto>> obtenerAlertas() {
+        return ResponseEntity.ok(productoService.obtenerAlertasStock());
+    }
+
+    // 6. Borrado Lógico
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        productoService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

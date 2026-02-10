@@ -13,16 +13,16 @@ import java.util.List;
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+//    @Autowired
+//    private ClienteRepository clienteRepository;
 
-    @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
-        return new ResponseEntity<>(clienteRepository.save(cliente), HttpStatus.CREATED);
-    }
-    @GetMapping
-    public List<Cliente> getAll() {
-        return clienteRepository.findAll();
-    }
+//    @PostMapping
+//    public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
+//        return new ResponseEntity<>(clienteRepository.save(cliente), HttpStatus.CREATED);
+//    }
+//    @GetMapping
+//    public List<Cliente> getAll() {
+//        return clienteRepository.findAll();
+//    }
 
 }
