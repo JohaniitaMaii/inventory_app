@@ -1,32 +1,36 @@
 # Sistema de Gestión de Inventario - Backend Java
 
-Este proyecto es un sistema robusto de backend diseñado para gestionar la lógica compleja de un inventario, priorizando la integridad de los datos y una arquitectura de servicios escalable.
+Este proyecto es un sistema robusto de backend diseñado para gestionar la lógica compleja de inventarios y ventas, priorizando la integridad de los datos y una arquitectura de servicios desacoplada.
 
 ## 🚀 Arquitectura y Lógica de Negocio
 
-El corazón de este sistema es su **jerarquía de servicios**, diseñada para delegar responsabilidades y validaciones de forma eficiente:
+El sistema implementa una **jerarquía de servicios** estratégica para delegar responsabilidades y validaciones:
 **Venta -> Empleado -> Puesto**
 
-- **Desacoplamiento:** Cada servicio tiene una responsabilidad única (Single Responsibility Principle).
-- **Validaciones en Cascada:** Para registrar una venta, el sistema valida la existencia y estado del empleado, quien a su vez depende de las jerarquías y permisos de su puesto.
-- **Integridad:** Asegura que ninguna transacción se realice sin cumplir las reglas de negocio del establecimiento.
+* **Desacoplamiento:** Aplicación estricta de *Single Responsibility Principle* (SRP).
+* **Validaciones en Cascada:** La lógica de negocio garantiza que una venta solo se procese si el empleado está activo y posee los permisos asociados a su puesto.
+* **Integridad Transaccional:** Uso de `@Transactional` para asegurar la consistencia en operaciones complejas de stock y facturación.
 
 ## 🛠 Stack Tecnológico
-- **Lenguaje:** Java 17+
-- **Framework:** Spring Boot 3.x
-- **Persistencia:** Spring Data JPA / Hibernate
-- **Base de Datos:** PostgreSQL
-- **Gestión de Dependencias:** Maven
-- **Pruebas de API:** Postman
+
+* **Lenguaje:** Java 17
+* **Framework:** Spring Boot 3.x (Spring Data JPA, Spring Web)
+* **Persistencia:** Hibernate / PostgreSQL
+* **Herramientas de Desarrollo:** IntelliJ IDEA, dBeaver, Postman
+* **Gestión de Dependencias:** Maven
 
 ## ⚙️ Funcionalidades Clave
-- CRUD completo de productos, ventas y empleados.
-- Implementación de consultas personalizadas en JPA para reportes de inventario.
-- Manejo global de excepciones para respuestas de API consistentes.
-- Diseño de base de datos relacional optimizado con dBeaver.
 
-## 🛠 Cómo ejecutar el proyecto
+* **API RESTful:** Endpoints estructurados para operaciones CRUD y reportes específicos.
+* **Manejo Global de Excepciones:** Respuestas estandarizadas (JSON) ante errores de validación o de negocio.
+* **Modelado de Datos:** Diseño relacional optimizado con foco en la normalización y performance de consultas.
+
+## 🛠 Instalación y Ejecución
+
 1. Clonar el repositorio.
-2. Configurar la base de datos PostgreSQL en `src/main/resources/application.properties`.
-3. Ejecutar `mvn clean install`.
-4. Correr la aplicación desde el entorno (IntelliJ IDEA recomendado).
+2. Configurar las credenciales de PostgreSQL en `src/main/resources/application.properties`.
+3. Ejecutar `mvn clean install` para buildear el proyecto y descargar dependencias.
+4. Correr la aplicación (`InventoryApplication.java`).
+
+---
+*Desarrollado con foco en escalabilidad y mentalidad "Get things done".*
