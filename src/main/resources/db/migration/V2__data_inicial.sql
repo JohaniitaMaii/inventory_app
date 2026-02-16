@@ -39,8 +39,8 @@ SELECT 'Admin', 'admin@saas.com', '20123456789', 'SUPER_ADMIN', true, 'L-001', 1
 FROM puestos WHERE nombre = 'Director General'
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO empleados(nombre, email, cuit_dni, rol, estado, legajo, salario_base, fecha_ingreso, puesto_id)
-SELECT 'Vendedor', 'vendedor@miempresa.com', '20345679871', 'SELLER', true, 'V-001', 650000.0, current_date,
+INSERT INTO empleados(nombre, email, cuit_dni, rol, estado, legajo, disponibilidad, salario_base, fecha_ingreso, puesto_id)
+SELECT 'Vendedor', 'vendedor@miempresa.com', '20345679871', 'SELLER', true, 'V-001', 'PRESENTE', 650000.0, current_date,
 id FROM puestos WHERE nombre = 'Vendedor'  ON CONFLICT (email) DO NOTHING;
 
 -- 5. Insertar Cliente Consumidor Final

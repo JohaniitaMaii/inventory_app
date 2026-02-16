@@ -26,6 +26,7 @@ public class Producto {
     @Column(nullable = false)
     private String nombre;
 
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     private boolean activo= true;
@@ -35,8 +36,8 @@ public class Producto {
     private BigDecimal precio;
 
     private BigDecimal precioCosto;
-    private Double margenGanancia;
-    private Double iva;
+    private BigDecimal margenGanancia;
+    private BigDecimal iva;
 
     @Min(value = 0, message = "El stock no puede ser negativo")
     @Column(nullable = false)

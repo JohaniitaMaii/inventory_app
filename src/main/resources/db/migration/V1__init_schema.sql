@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS sectores (
 
 CREATE TABLE IF NOT EXISTS puestos (
     id BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    sector_id INTEGER REFERENCES sectores(id),
+    nombre VARCHAR(100) UNIQUE NOT NULL,
+    sector_id BIGINT REFERENCES sectores(id),
     puede_vender BOOLEAN DEFAULT FALSE,
     puede_gestionar_inventario BOOLEAN DEFAULT FALSE,
     puede_gestionar_empleados BOOLEAN DEFAULT FALSE,
@@ -29,31 +29,44 @@ CREATE TABLE IF NOT EXISTS puestos (
 
 CREATE TABLE IF NOT EXISTS empleados (
     id BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
-    telefono VARCHAR(20),
-    domicilio VARCHAR(255),
-    estado BOOLEAN DEFAULT TRUE,
     rol VARCHAR(50),
-    legajo VARCHAR(20) UNIQUE,
-    puesto_id INTEGER REFERENCES puestos(id),
+    nombre VARCHAR(100) NOT NULL,
+    domicilio VARCHAR(255),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
+    estado BOOLEAN DEFAULT TRUE,
+    puesto_id BIGINT REFERENCES puestos(id),
+    fecha_ingreso DATE,
+    fecha_egreso DATE,
+    modalidad VARCHAR(50), -- PRESENCIAL, REMOTO, HÍBRIDO
+    jornada VARCHAR(50), -- COMPLETA, MEDIA_JORNADA, POR_HORAS
+    contrato VARCHAR(50), -- TEMPORAL, PERMANENTE, POR_PROYECTO
     disponibilidad VARCHAR(50), -- PRESENTE, AUSENTE
+    legajo VARCHAR(20) UNIQUE,
     salario_base DECIMAL(19, 2),
-    fecha_ingreso DATE
+    comision DECIMAL(5, 2), -- Porcentaje de comisión para vendedores
+    sucursal VARCHAR(100), -- Sucursal a la que está asignado el empleado
+    objetivo_mensual DECIMAL(19, 2), -- Objetivo de ventas mensual para vendedores
+    obra_social VARCHAR(100), -- Obra social del empleado
+    cbu VARCHAR(22) UNIQUE -- CBU para pagos de nómina
 );
 
 CREATE TABLE IF NOT EXISTS clientes (
     id BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
-    telefono VARCHAR(20),
-    domicilio VARCHAR(255),
-    estado BOOLEAN DEFAULT TRUE,
     rol VARCHAR(50),
+    nombre VARCHAR(100) NOT NULL,
+    domicilio VARCHAR(255),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(20),
+    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
+    estado BOOLEAN DEFAULT TRUE,
+    tipo_cliente VARCHAR(50),
+    comportamiento VARCHAR(50), -- FRECUENTE, OCASIONAL, NUEVO
     categoria_fiscal VARCHAR(50),
-    tipo_cliente VARCHAR(50)
+    origen VARCHAR(100), -- Origen del cliente (referencia, publicidad, etc.)
+    puntuacion INTEGER,
+    preferencia VARCHAR(100) -- Preferencia de productos o categorías
 );
 
 -- Productos
@@ -64,7 +77,11 @@ CREATE TABLE IF NOT EXISTS productos (
     marca VARCHAR(100),
     codigo_barras VARCHAR(50) UNIQUE NOT NULL,
     precio DECIMAL(19, 2) NOT NULL,
-    stock INTEGER NOT NULL,
-    categoria_id INTEGER REFERENCES categorias(id),
+    precio_costo DECIMAL(19, 2),
+    margen_ganancia DECIMAL(5, 2), -- Porcentaje de margen de ganancia
+    iva DECIMAL(5, 2), -- Porcentaje de IVA
+    stock_actual INTEGER NOT NULL,
+    stock_minimo INTEGER,
+    categoria_id BIGINT REFERENCES categorias(id),
     activo BOOLEAN DEFAULT TRUE
 );

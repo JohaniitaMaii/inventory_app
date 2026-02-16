@@ -18,6 +18,7 @@ public class Puesto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false, length = 100)
     private String nombre;
 
     @ManyToOne
@@ -28,12 +29,19 @@ public class Puesto {
     private List<Empleado> empleados;
 
     // --- BLOQUE DE PERMISOS                           CAPACIDADES
+   @Column (name = "puede_vender")
     private boolean puedeVender;                // Realizar transacciones de venta
+    @Column (name = "puede_gestionar_inventario")
     private boolean puedeGestionarInventario;   // Alta/Baja/Modificación de productos
+    @Column (name = "puede_gestionar_empleados")
     private boolean puedeGestionarEmpleados;    // CRUD de empleados y puestos
+    @Column (name = "puede_ver_reportes_sensibles")
     private boolean puedeVerReportesSensibles;  // Acceso a balances y ganancias
+    @Column (name = "puede_gestionar_clientes")
     private boolean puedeGestionarClientes;     // CRUD de base de datos de clientes
+    @Column (name = "puede_realizar_mantenimiento")
     private boolean puedeRealizarMantenimiento; // Acceso a módulos técnicos/edificios
+    @Column (name = "puede_configurar_sistema")
     private boolean puedeConfigurarSistema;     // Modificar parámetros globales (SaaS)
 
     public Puesto(String nombre, Sector sector, boolean puedeVender,

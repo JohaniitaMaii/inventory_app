@@ -17,7 +17,9 @@ public abstract class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
+    @Column( nullable = false, length = 100)
     private String nombre;
+
     private String domicilio;
 
     @Column (unique = true, nullable = false)
@@ -30,6 +32,5 @@ public abstract class Usuario {
 
     @Column(name = "estado")
     private boolean estado= true;
-
 
 }

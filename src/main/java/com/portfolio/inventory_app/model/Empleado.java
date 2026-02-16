@@ -44,10 +44,15 @@ public class Empleado extends Usuario {
     @Column(unique = true)
     private String legajo;
 
+    @Column(name = "salario_base")
     private Double salarioBase;
     private Double comision;
     private String sucursal;
+
+    @Column(name = "objetivo_mensual")
     private Double objetivoMensual;
+
+    @Column(name = "obra_social")
     private String obraSocial;
 
     @Column(unique= true,length = 22)

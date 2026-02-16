@@ -53,8 +53,8 @@ public class ProductoService {
 
     private BigDecimal calcularPrecioVenta(Producto p) {
         BigDecimal costo = p.getPrecioCosto();
-        double margen = (p.getMargenGanancia() != null) ? p.getMargenGanancia() : 0.0;
-        double impuesto = (p.getIva() != null) ? p.getIva() : 0.0;
+        BigDecimal margen = p.getMargenGanancia(p.getMargenGanancia() != null) ? p.getMargenGanancia() : 0.0;
+        BigDecimal impuesto = (p.getIva() != null) ? p.getIva() : 0.0;
 
         BigDecimal factorMargen = BigDecimal.valueOf(1 + margen / 100);
         BigDecimal factorIva = BigDecimal.valueOf(1 + impuesto / 100);
@@ -119,7 +119,7 @@ public class ProductoService {
     }
 
     @Transactional
-    public void actualizarPrecioPorCosto(Long id, BigDecimal nuevoCosto, Double nuevoMargen, Double ivaPorcentaje) {
+    public void actualizarPrecioPorCosto(Long id, BigDecimal nuevoCosto, BigDecimal nuevoMargen, BigDecimal ivaPorcentaje) {
         Producto p = getById(id);
         p.setPrecioCosto(nuevoCosto);
         if (nuevoMargen != null) p.setMargenGanancia(nuevoMargen);
