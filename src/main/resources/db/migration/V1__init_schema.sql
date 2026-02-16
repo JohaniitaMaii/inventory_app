@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS clientes (
     domicilio VARCHAR(255),
     estado BOOLEAN DEFAULT TRUE,
     rol VARCHAR(50),
-    categoria_fiscal VARCHAR(50), -- CONSUMIDOR_FINAL
-    tipo_cliente VARCHAR(50) -- VENTA_MOSTRADOR
+    categoria_fiscal VARCHAR(50),
+    tipo_cliente VARCHAR(50)
 );
 
 -- Productos

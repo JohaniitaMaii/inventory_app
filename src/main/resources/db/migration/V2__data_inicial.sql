@@ -33,7 +33,7 @@ INSERT INTO puestos (nombre, sector_id, puede_vender, puede_gestionar_inventario
 SELECT 'Jefe de Depósito', id, false, true FROM sectores WHERE nombre = 'Producto/Logística'
 ON CONFLICT DO NOTHING;
 
--- 4. Insertar Empleado Admin (Directo a la tabla empleados por herencia TABLE_PER_CLASS)
+-- 4. Insertar Empleado Admin
 INSERT INTO empleados (nombre, email, cuit_dni, rol, estado, legajo, salario_base, fecha_ingreso, puesto_id)
 SELECT 'Admin', 'admin@saas.com', '20123456789', 'SUPER_ADMIN', true, 'L-001', 100000.0, CURRENT_DATE, id
 FROM puestos WHERE nombre = 'Director General'
