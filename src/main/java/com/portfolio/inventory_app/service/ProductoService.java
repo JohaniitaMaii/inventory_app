@@ -1,5 +1,6 @@
 package com.portfolio.inventory_app.service;
 
+import com.portfolio.inventory_app.exception.StockInsuficienteException;
 import com.portfolio.inventory_app.model.Producto;
 import com.portfolio.inventory_app.repository.ProductoRepository;
 import jakarta.transaction.Transactional;
@@ -34,7 +35,7 @@ public class ProductoService {
 
     public Producto getById(Long id) {
         return productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado en dBeaver"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado en Base de datos"));
     }
 
     public Producto buscarPorCodigoBarras(String codigo) {
@@ -94,7 +95,7 @@ public class ProductoService {
         } else {
             nuevoStock = p.getStockActual() - cantidad;
             if (nuevoStock < 0) {
-                System.out.println("ADVERTENCIA: Venta con stock insuficiente. Producto: " + p.getNombre());
+                throw new StockInsuficienteException("ADVERTENCIA: Venta con stock insuficiente para Producto: " + p.getNombre());
             }
         }
 
