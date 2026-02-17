@@ -52,12 +52,14 @@ public class ProductoService {
     }
 
     private BigDecimal calcularPrecioVenta(Producto p) {
-        BigDecimal costo = p.getPrecioCosto();
-        BigDecimal margen = p.getMargenGanancia(p.getMargenGanancia() != null) ? p.getMargenGanancia() : 0.0;
-        BigDecimal impuesto = (p.getIva() != null) ? p.getIva() : 0.0;
+        BigDecimal costo = (p.getPrecioCosto() != null) ? p.getPrecioCosto() : BigDecimal.ZERO;
 
-        BigDecimal factorMargen = BigDecimal.valueOf(1 + margen / 100);
-        BigDecimal factorIva = BigDecimal.valueOf(1 + impuesto / 100);
+        // Corrección de sintaxis en el ternario y manejo de Double a BigDecimal
+        BigDecimal margen = (p.getMargenGanancia() != null) ? p.getMargenGanancia() : BigDecimal.ZERO;
+        BigDecimal impuesto = (p.getIva() != null) ? p.getIva() : BigDecimal.ZERO;
+
+        BigDecimal factorMargen = BigDecimal.ONE.add(margen.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
+        BigDecimal factorIva = BigDecimal.ONE.add(impuesto.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
 
         return costo.multiply(factorMargen).multiply(factorIva)
                 .setScale(2, RoundingMode.HALF_UP);

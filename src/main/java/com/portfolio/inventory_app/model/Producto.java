@@ -35,7 +35,10 @@ public class Producto {
     @Column(nullable = false)
     private BigDecimal precio;
 
+    @Column (name = "precio_costo")
     private BigDecimal precioCosto;
+
+    @Column(name = "margen_ganancia")
     private BigDecimal margenGanancia;
     private BigDecimal iva;
 
@@ -45,11 +48,11 @@ public class Producto {
 
     private Integer stockMinimo;
 
-    @Column(name = "codigo_barras", unique = true)
+    @Column(name = "codigo_barras", unique = true, nullable = false)
     private String codigoBarras;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "category_id", nullable = true)
+    @JoinColumn(name = "categoria_id", nullable = true)
     @JsonIgnoreProperties("productos")
     private CategoriaProductos categoriaProductos;
 

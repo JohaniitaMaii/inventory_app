@@ -57,13 +57,13 @@ BEGIN
     FOREACH p_base IN ARRAY productos_base LOOP
         FOR i IN 1..3 LOOP
             -- GAMA PREMIUM
-            INSERT INTO productos (nombre, descripcion, precio, stock, codigo_barras, categoria_id, marca, activo)
+            INSERT INTO productos (nombre, descripcion, precio, stock_actual, codigo_barras, categoria_id, marca, activo)
             SELECT p_base, 'Modelo Pro Max v' || i, 150000.00, 12, 'SKU-PRM-' || UPPER(p_base) || i, id, 'Marca Premium', true
             FROM categorias WHERE nombre = 'Gama Premium'
             ON CONFLICT (codigo_barras) DO NOTHING;
 
             -- GAMA BAJA
-            INSERT INTO productos (nombre, descripcion, precio, stock, codigo_barras, categoria_id, marca, activo)
+            INSERT INTO productos (nombre, descripcion, precio, stock_actual, codigo_barras, categoria_id, marca, activo)
             SELECT p_base, 'Modelo Basic Edition', 25000.00, 24, 'SKU-BAS-' || UPPER(p_base) || i, id, 'Marca Económica', true
             FROM categorias WHERE nombre = 'Gama Baja'
             ON CONFLICT (codigo_barras) DO NOTHING;

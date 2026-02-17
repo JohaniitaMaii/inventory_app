@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -23,10 +24,12 @@ public class Empleado extends Usuario {
     @JsonIgnoreProperties("empleados")
     private Puesto puesto;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_ingreso")
     private Date ingreso;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_egreso")
     private Date egreso;
 
     @Enumerated(EnumType.STRING)
@@ -45,12 +48,12 @@ public class Empleado extends Usuario {
     private String legajo;
 
     @Column(name = "salario_base")
-    private Double salarioBase;
-    private Double comision;
+    private BigDecimal salarioBase;
+    private BigDecimal comision;
     private String sucursal;
 
     @Column(name = "objetivo_mensual")
-    private Double objetivoMensual;
+    private BigDecimal objetivoMensual;
 
     @Column(name = "obra_social")
     private String obraSocial;

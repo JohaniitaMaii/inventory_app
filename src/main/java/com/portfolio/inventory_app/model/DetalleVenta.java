@@ -19,16 +19,18 @@ public class DetalleVenta {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "venta_id")
+    @JoinColumn(name = "venta_id", nullable = false)
     @JsonIgnoreProperties("detalles")
     private Venta venta;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
 
+    @Column(nullable = false)
     private Integer cantidad;
-    private BigDecimal precioUnitario;
 
+    @Column(nullable = false)
+    private BigDecimal precioUnitario;
 
 }
