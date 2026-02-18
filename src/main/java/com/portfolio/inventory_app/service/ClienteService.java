@@ -1,5 +1,6 @@
 package com.portfolio.inventory_app.service;
 
+import com.portfolio.inventory_app.exception.BusinessLogicException;
 import com.portfolio.inventory_app.model.Cliente;
 import com.portfolio.inventory_app.model.enums.CategoriaFiscal;
 import com.portfolio.inventory_app.model.enums.Comportamiento;
@@ -20,7 +21,7 @@ public class ClienteService {
         Cliente cliente = getById(id);
         if (cliente.getComportamiento() == Comportamiento.MOROSO ||
                 cliente.getComportamiento() == Comportamiento.FRAUDULENTO) {
-            throw new RuntimeException("Atención: El cliente tiene un historial de: " + cliente.getComportamiento());
+            throw new BusinessLogicException("Atención: El cliente tiene un historial de: " + cliente.getComportamiento());
         }
         verificarEstadoIntegral(cliente);
         return cliente;
@@ -29,34 +30,28 @@ public class ClienteService {
     public Cliente getById(Long id) {
         return clienteRepository.findById(id)
                 .orElseThrow(()
-                        -> new RuntimeException("Error: Cliente con ID " + id + " no encontrado en Base de Datos."));
+                        -> new BusinessLogicException("Error: Cliente con ID " + id + " no encontrado en Base de Datos."));
     }
 
     @Transactional
     public Cliente save(Cliente cliente) {
-        // 1. Validar duplicados por CUIT/DNI
         clienteRepository.findByCuitDni(cliente.getCuitDni()).ifPresent(c -> {
-            throw new RuntimeException("Ya existe un cliente registrado con el documento: " + cliente.getCuitDni());
+            throw new BusinessLogicException("Ya existe un cliente registrado con el documento: " + cliente.getCuitDni());
         });
-
-        // 2. Validaciones de negocio
         validarDocumentacionSegunFiscalidad(cliente);
-
         return clienteRepository.save(cliente);
     }
 
-    // --- MÉTODOS PRIVADOS (Lógica Interna) ---
-
     private void verificarEstadoIntegral(Cliente cliente) {
         if (!cliente.isEstado()) {
-            throw new RuntimeException("Operación Cancelada: El cliente " + cliente.getNombre() + " está inactivo.");
+            throw new BusinessLogicException("Operación Cancelada: El cliente " + cliente.getNombre() + " está inactivo.");
         }
     }
 
     private void validarDocumentacionSegunFiscalidad(Cliente cliente) {
         if (cliente.getCategoriaFiscal() == CategoriaFiscal.RESPONSABLE_INSCRIPTO) {
             if (cliente.getCuitDni() == null || cliente.getCuitDni().length() != 11) {
-                throw new RuntimeException("Para Responsable Inscripto se requiere un CUIT válido de 11 dígitos.");
+                throw new BusinessLogicException("Para Responsable Inscripto se requiere un CUIT válido de 11 dígitos.");
             }
         }
     }

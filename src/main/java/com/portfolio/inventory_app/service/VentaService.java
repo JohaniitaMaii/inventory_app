@@ -1,5 +1,6 @@
 package com.portfolio.inventory_app.service;
 
+import com.portfolio.inventory_app.exception.BusinessLogicException;
 import com.portfolio.inventory_app.model.*;
 import com.portfolio.inventory_app.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class VentaService {
         venta.setCliente(cliente);
         venta.setFecha(LocalDateTime.now());
         if (venta.getDetalles() == null || venta.getDetalles().isEmpty()) {
-            throw new RuntimeException("Error: Una venta debe tener al menos un producto.");
+            throw new BusinessLogicException("Error: Una venta debe tener al menos un producto.");
         }
         BigDecimal totalAcumulado = BigDecimal.ZERO;
         for (DetalleVenta detalle : venta.getDetalles()) {

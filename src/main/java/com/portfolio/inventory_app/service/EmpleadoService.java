@@ -1,5 +1,6 @@
 package com.portfolio.inventory_app.service;
 
+import com.portfolio.inventory_app.exception.EmployeeStatusException;
 import com.portfolio.inventory_app.model.Empleado;
 import com.portfolio.inventory_app.model.enums.Disponibilidad;
 import com.portfolio.inventory_app.repository.EmpleadoRepository;
@@ -80,7 +81,7 @@ public class EmpleadoService {
     private void verificarEstadoIntegral(Empleado empleado) {
         if (!empleado.isEstado()) throw new RuntimeException("Empleado dado de baja.");
         if (empleado.getDisponibilidad() != Disponibilidad.PRESENTE) {
-            throw new RuntimeException("Situación administrativa: " + empleado.getDisponibilidad());
+            throw new EmployeeStatusException("Situación administrativa: " + empleado.getDisponibilidad());
         }
         // verificarHorarioLaboral(empleado);
     }
