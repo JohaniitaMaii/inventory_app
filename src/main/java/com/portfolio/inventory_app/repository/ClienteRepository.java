@@ -1,7 +1,7 @@
 package com.portfolio.inventory_app.repository;
 
 
-import com.portfolio.inventory_app.model.Cliente;
+import com.portfolio.inventory_app.model.entities.Cliente;
 import com.portfolio.inventory_app.model.enums.CategoriaFiscal;
 import com.portfolio.inventory_app.model.enums.Comportamiento;
 import com.portfolio.inventory_app.model.enums.Origen;

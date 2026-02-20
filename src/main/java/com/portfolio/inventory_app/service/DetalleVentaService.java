@@ -1,8 +1,8 @@
 package com.portfolio.inventory_app.service;
 
-import com.portfolio.inventory_app.model.DetalleVenta;
-import com.portfolio.inventory_app.model.Producto;
-import com.portfolio.inventory_app.model.Venta;
+import com.portfolio.inventory_app.model.entities.DetalleVenta;
+import com.portfolio.inventory_app.model.entities.Producto;
+import com.portfolio.inventory_app.model.entities.Venta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

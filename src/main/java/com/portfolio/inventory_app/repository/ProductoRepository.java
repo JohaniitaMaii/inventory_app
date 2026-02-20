@@ -1,9 +1,8 @@
 package com.portfolio.inventory_app.repository;
 
-import com.portfolio.inventory_app.model.Producto;
+import com.portfolio.inventory_app.model.entities.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

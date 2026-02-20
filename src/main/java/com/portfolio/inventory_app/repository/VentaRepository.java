@@ -1,6 +1,6 @@
 package com.portfolio.inventory_app.repository;
 
-import com.portfolio.inventory_app.model.Venta;
+import com.portfolio.inventory_app.model.entities.Venta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

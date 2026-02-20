@@ -54,14 +54,9 @@ public class GlobalExceptionHandler {
         return buildResponse("Proveedor Bloquedo. Revisar Historial", ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler(EmailInvalidException.class)
-//    public ResponseEntity<ErrorResponse> handleEmailInvalidException(EmailInvalidException ex) {
-//        Map<String, Object> body = new HashMap<>();
-//        body.put("timestamp", System.currentTimeMillis());
-//        body.put("error", "Email invalido.");
-//        body.put("message", ex.getMessage());
-//        body.put("status", HttpStatus.BAD_REQUEST.value());
-//        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(EmailInvalidException.class)
+    public ResponseEntity<Map<String, Object>> handleEmailInvalidException(EmailInvalidException ex) {
+        return buildResponse("Email Invalido", ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
 }

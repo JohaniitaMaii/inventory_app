@@ -1,7 +1,10 @@
 package com.portfolio.inventory_app.service;
 
 import com.portfolio.inventory_app.exception.BusinessLogicException;
-import com.portfolio.inventory_app.model.*;
+import com.portfolio.inventory_app.model.entities.Cliente;
+import com.portfolio.inventory_app.model.entities.DetalleVenta;
+import com.portfolio.inventory_app.model.entities.Empleado;
+import com.portfolio.inventory_app.model.entities.Venta;
 import com.portfolio.inventory_app.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

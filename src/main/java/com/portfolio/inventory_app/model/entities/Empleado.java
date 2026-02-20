@@ -1,6 +1,7 @@
-package com.portfolio.inventory_app.model;
+package com.portfolio.inventory_app.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.portfolio.inventory_app.model.domain.InformacionLaboral;
 import com.portfolio.inventory_app.model.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,29 +29,16 @@ public class Empleado extends Usuario {
     @Column(name = "fecha_ingreso")
     private Date ingreso;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_egreso")
-    private Date egreso;
-
-    @Enumerated(EnumType.STRING)
-    private Modalidad modalidad;
-
-    @Enumerated(EnumType.STRING)
-    private Jornada jornada;
-
-    @Enumerated(EnumType.STRING)
-    private Contrato contrato;
+    @Column(unique = true)
+    private String legajo;
 
     @Enumerated(EnumType.STRING)
     private Disponibilidad disponibilidad;
 
-    @Column(unique = true)
-    private String legajo;
-
-    @Column(name = "salario_base")
-    private BigDecimal salarioBase;
-    private BigDecimal comision;
     private String sucursal;
+
+    @Embedded
+    private InformacionLaboral informacionLaboral;
 
     @Column(name = "objetivo_mensual")
     private BigDecimal objetivoMensual;
@@ -60,5 +48,9 @@ public class Empleado extends Usuario {
 
     @Column(unique= true,length = 22)
     private String cbu;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_egreso")
+    private Date egreso;
 
 }

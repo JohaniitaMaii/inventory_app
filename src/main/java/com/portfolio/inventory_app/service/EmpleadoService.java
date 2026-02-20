@@ -1,9 +1,11 @@
 package com.portfolio.inventory_app.service;
 
+import com.portfolio.inventory_app.exception.BusinessLogicException;
 import com.portfolio.inventory_app.exception.EmployeeStatusException;
-import com.portfolio.inventory_app.model.Empleado;
+import com.portfolio.inventory_app.model.entities.Empleado;
 import com.portfolio.inventory_app.model.enums.Disponibilidad;
 import com.portfolio.inventory_app.repository.EmpleadoRepository;
+import com.portfolio.inventory_app.util.DataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,17 @@ public class EmpleadoService {
 
     @Autowired private EmpleadoRepository empleadoRepository;
     @Autowired private PuestoService puestoService;
+    @Autowired private DataValidator validator;
 
     public List<Empleado> listAll() {
         return empleadoRepository.findAll();
     }
 
     public Empleado save(Empleado empleado) {
+        empleadoRepository.findByCuitDni(empleado.getDni()).ifPresent(e -> {
+            throw new BusinessLogicException("El empleado ya existe");
+        });
+        validator.validarEmail(empleado.getEmail());
         return empleadoRepository.save(empleado);
     }
 

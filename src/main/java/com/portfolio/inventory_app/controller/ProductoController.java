@@ -1,7 +1,7 @@
 package com.portfolio.inventory_app.controller;
 
 
-import com.portfolio.inventory_app.model.Producto;
+import com.portfolio.inventory_app.model.entities.Producto;
 import com.portfolio.inventory_app.service.ProductoService;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;

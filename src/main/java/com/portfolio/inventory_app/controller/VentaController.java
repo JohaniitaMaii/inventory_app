@@ -1,6 +1,6 @@
 package com.portfolio.inventory_app.controller;
 
-import com.portfolio.inventory_app.model.Venta;
+import com.portfolio.inventory_app.model.entities.Venta;
 import com.portfolio.inventory_app.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,7 +1,7 @@
 package com.portfolio.inventory_app.service;
 
 import com.portfolio.inventory_app.exception.StockInsuficienteException;
-import com.portfolio.inventory_app.model.Producto;
+import com.portfolio.inventory_app.model.entities.Producto;
 import com.portfolio.inventory_app.repository.ProductoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

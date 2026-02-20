@@ -1,6 +1,6 @@
 package com.portfolio.inventory_app.controller;
 
-import com.portfolio.inventory_app.model.Puesto;
+import com.portfolio.inventory_app.model.entities.Puesto;
 import com.portfolio.inventory_app.service.PuestoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

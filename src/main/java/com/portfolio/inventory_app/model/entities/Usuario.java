@@ -1,4 +1,4 @@
-package com.portfolio.inventory_app.model;
+package com.portfolio.inventory_app.model.entities;
 
 import com.portfolio.inventory_app.model.enums.Rol;
 import jakarta.persistence.*;
@@ -28,7 +28,7 @@ public abstract class Usuario {
     private String telefono;
 
     @Column (unique = true, nullable = false)
-    private String cuitDni;
+    private String dni;
 
     @Column(name = "estado")
     private boolean estado= true;

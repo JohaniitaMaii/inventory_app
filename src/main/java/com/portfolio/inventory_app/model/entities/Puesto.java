@@ -1,4 +1,4 @@
-package com.portfolio.inventory_app.model;
+package com.portfolio.inventory_app.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

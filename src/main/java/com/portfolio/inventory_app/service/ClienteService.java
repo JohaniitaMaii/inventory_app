@@ -1,10 +1,11 @@
 package com.portfolio.inventory_app.service;
 
 import com.portfolio.inventory_app.exception.BusinessLogicException;
-import com.portfolio.inventory_app.model.Cliente;
+import com.portfolio.inventory_app.model.entities.Cliente;
 import com.portfolio.inventory_app.model.enums.CategoriaFiscal;
 import com.portfolio.inventory_app.model.enums.Comportamiento;
 import com.portfolio.inventory_app.repository.ClienteRepository;
+import com.portfolio.inventory_app.util.DataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClienteService {
 
     @Autowired private ClienteRepository clienteRepository;
+    @Autowired private DataValidator validator;
 
     public Cliente validarClienteParaVenta(Long id) {
         if (id == null || id == 1L) {
@@ -35,9 +37,10 @@ public class ClienteService {
 
     @Transactional
     public Cliente save(Cliente cliente) {
-        clienteRepository.findByCuitDni(cliente.getCuitDni()).ifPresent(c -> {
-            throw new BusinessLogicException("Ya existe un cliente registrado con el documento: " + cliente.getCuitDni());
+        clienteRepository.findByCuitDni(cliente.getDni()).ifPresent(c -> {
+            throw new BusinessLogicException("Ya existe un cliente registrado con el documento: " + cliente.getDni());
         });
+        validator.validarEmail(cliente.getEmail());
         validarDocumentacionSegunFiscalidad(cliente);
         return clienteRepository.save(cliente);
     }
@@ -50,7 +53,7 @@ public class ClienteService {
 
     private void validarDocumentacionSegunFiscalidad(Cliente cliente) {
         if (cliente.getCategoriaFiscal() == CategoriaFiscal.RESPONSABLE_INSCRIPTO) {
-            if (cliente.getCuitDni() == null || cliente.getCuitDni().length() != 11) {
+            if (cliente.getDni() == null || cliente.getDni().length() != 11) {
                 throw new BusinessLogicException("Para Responsable Inscripto se requiere un CUIT válido de 11 dígitos.");
             }
         }
