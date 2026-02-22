@@ -23,7 +23,7 @@ public class EmpleadoService {
     }
 
     public Empleado save(Empleado empleado) {
-        empleadoRepository.findByCuitDni(empleado.getDni()).ifPresent(e -> {
+        empleadoRepository.findByDni(empleado.getDni()).ifPresent(e -> {
             throw new BusinessLogicException("El empleado ya existe");
         });
         validator.validarEmail(empleado.getEmail());
@@ -79,9 +79,9 @@ public class EmpleadoService {
         return e;
     }
 
-    private Empleado encontrarPorId(Long id) {
+    public Empleado encontrarPorId(Long id) {
         return empleadoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException
+                .orElseThrow(() -> new BusinessLogicException
                         ("Error: Empleado con ID " + id + " no existe en la base de datos."));
     }
 
