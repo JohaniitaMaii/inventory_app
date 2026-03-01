@@ -29,22 +29,45 @@ SELECT 'Vendedor', id, true FROM sectores WHERE nombre = 'Comercial/Ventas'
 ON CONFLICT DO NOTHING;
 
 -- Jefe de Depósito
-INSERT INTO puestos (nombre, sector_id, puede_vender, puede_gestionar_inventario)
-SELECT 'Jefe de Depósito', id, false, true FROM sectores WHERE nombre = 'Producto/Logística'
+INSERT INTO puestos (nombre, sector_id, puede_gestionar_inventario)
+SELECT 'Jefe de Depósito', id, true FROM sectores WHERE nombre = 'Producto/Logística'
 ON CONFLICT DO NOTHING;
 
+INSERT INTO informacion_laboral
+(cuit, cbu, fecha_ingreso,
+categoria_fiscal, contrato, jornada, modalidad, disponibilidad,
+ salario_base, aplica_presentismo, aplica_sindicato, porc_antig_anio, comision)
+VALUES
+('20-20123456-7', '0000003100012345678901', '2025-01-01 09:00:00',
+ 'RESPONSABLE_INSCRIPTO', 'INDETERMINADO', 'FULL_TIME', 'PRESENCIAL', 'PRESENTE',
+  1500000.00, false, false, 2.5, 0.0);
+INSERT INTO informacion_laboral
+(cuit, cbu, fecha_ingreso,
+categoria_fiscal, contrato, jornada, modalidad, disponibilidad,
+ salario_base, aplica_presentismo, aplica_sindicato, porc_antig_anio, comision)
+VALUES
+('23-23456791-9', '0000003100098765432109', '2025-02-01 08:00:00',
+ 'MONOTRIBUTO', 'TEMPORADA', 'PART_TIME', 'HIBRIDO', 'PRESENTE',
+ 450000.00, true, true, 1.0, 5.5)
+ON CONFLICT (cuit) DO NOTHING;
+
+
 -- 4. Insertar Empleado Admin
-INSERT INTO empleados (nombre, email, cuit_dni, rol, estado, legajo, salario_base, fecha_ingreso, puesto_id)
-SELECT 'Admin', 'admin@saas.com', '20123456789', 'SUPER_ADMIN', true, 'L-001', 100000.0, CURRENT_DATE, id
-FROM puestos WHERE nombre = 'Director General'
+INSERT INTO empleados (nombre, email, dni, rol, estado, legajo,  puesto_id, informacion_laboral_id)
+SELECT 'Admin', 'admin@saas.com', '201234567', 'SUPER_ADMIN', true, 'L-001',
+(SELECT id FROM puestos WHERE nombre = 'Director General'),
+(SELECT id FROM informacion_laboral WHERE cuit LIKE '%20123456%')
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO empleados(nombre, email, cuit_dni, rol, estado, legajo, disponibilidad, salario_base, fecha_ingreso, puesto_id)
-SELECT 'Vendedor', 'vendedor@miempresa.com', '20345679871', 'SELLER', true, 'V-001', 'PRESENTE', 650000.0, current_date,
-id FROM puestos WHERE nombre = 'Vendedor'  ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO empleados(nombre, email, dni, rol, estado, legajo, puesto_id, informacion_laboral_id)
+SELECT 'Vendedor', 'vendedor@miempresa.com', '23456791', 'SELLER', true, 'V-001',
+(SELECT id FROM puestos WHERE nombre = 'Vendedor'),
+    (SELECT id FROM informacion_laboral WHERE cuit LIKE '%23456791%')
+ON CONFLICT (email) DO NOTHING;
 
 -- 5. Insertar Cliente Consumidor Final
-INSERT INTO clientes (nombre, email, cuit_dni, estado, categoria_fiscal, tipo_cliente)
+INSERT INTO clientes (nombre, email, dni, estado, categoria_fiscal, tipo_cliente)
 VALUES ('Cliente Consumidor Final', 'venta.mostrador@consumidor.final', '20-11222333-4', true, 'CONSUMIDOR_FINAL', 'VENTA_MOSTRADOR')
 ON CONFLICT (email) DO NOTHING;
 

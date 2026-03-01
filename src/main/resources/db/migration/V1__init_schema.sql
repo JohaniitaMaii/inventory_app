@@ -25,6 +25,25 @@ CREATE TABLE IF NOT EXISTS puestos (
     activo BOOLEAN DEFAULT TRUE
 );
 
+--  Tabla de Información Laboral
+CREATE TABLE IF NOT EXISTS informacion_laboral (
+    id BIGSERIAL PRIMARY KEY,
+    cuit VARCHAR(20) UNIQUE NOT NULL,
+    cbu VARCHAR(22) UNIQUE,
+    fecha_ingreso DATE,
+    categoria_fiscal VARCHAR(50),
+    contrato VARCHAR(50),
+    jornada VARCHAR(50),
+    modalidad VARCHAR(50),
+    disponibilidad VARCHAR(50),
+    salario_base DECIMAL(19, 2),
+    aplica_presentismo BOOLEAN DEFAULT FALSE,
+    aplica_sindicato BOOLEAN DEFAULT FALSE,
+    porc_antig_anio DECIMAL,
+    comision DECIMAL(5, 2),
+    fecha_egreso DATE
+);
+
 -- Usuarios y Herencia (Table-per-Class o Joined)
 
 CREATE TABLE IF NOT EXISTS empleados (
@@ -34,22 +53,15 @@ CREATE TABLE IF NOT EXISTS empleados (
     domicilio VARCHAR(255),
     email VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(20),
-    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
+    dni VARCHAR(20) UNIQUE NOT NULL,
     estado BOOLEAN DEFAULT TRUE,
     puesto_id BIGINT REFERENCES puestos(id),
-    fecha_ingreso DATE,
-    fecha_egreso DATE,
-    modalidad VARCHAR(50), -- PRESENCIAL, REMOTO, HÍBRIDO
-    jornada VARCHAR(50), -- COMPLETA, MEDIA_JORNADA, POR_HORAS
-    contrato VARCHAR(50), -- TEMPORAL, PERMANENTE, POR_PROYECTO
-    disponibilidad VARCHAR(50), -- PRESENTE, AUSENTE
     legajo VARCHAR(20) UNIQUE,
-    salario_base DECIMAL(19, 2),
-    comision DECIMAL(19, 2), -- Porcentaje de comisión para vendedores
+    disponibilidad VARCHAR(50), -- PRESENTE, AUSENTE
     sucursal VARCHAR(100), -- Sucursal a la que está asignado el empleado
     objetivo_mensual DECIMAL(19, 2), -- Objetivo de ventas mensual para vendedores
     obra_social VARCHAR(100), -- Obra social del empleado
-    cbu VARCHAR(22) UNIQUE -- CBU para pagos de nómina
+    informacion_laboral_id BIGINT NOT NULL UNIQUE REFERENCES informacion_laboral(id)
 );
 
 CREATE TABLE IF NOT EXISTS clientes (
@@ -59,7 +71,7 @@ CREATE TABLE IF NOT EXISTS clientes (
     domicilio VARCHAR(255),
     email VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(20),
-    cuit_dni VARCHAR(20) UNIQUE NOT NULL,
+    dni VARCHAR(20) UNIQUE NOT NULL,
     estado BOOLEAN DEFAULT TRUE,
     tipo_cliente VARCHAR(50),
     comportamiento VARCHAR(50), -- FRECUENTE, OCASIONAL, NUEVO

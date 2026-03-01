@@ -4,10 +4,7 @@ import com.portfolio.inventory_app.model.enums.Comportamiento;
 import com.portfolio.inventory_app.model.enums.Origen;
 import com.portfolio.inventory_app.model.enums.TipoCliente;
 import com.portfolio.inventory_app.model.enums.CategoriaFiscal;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +17,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Cliente extends Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente;

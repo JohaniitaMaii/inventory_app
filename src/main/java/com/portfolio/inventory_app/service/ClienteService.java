@@ -37,7 +37,7 @@ public class ClienteService {
 
     @Transactional
     public Cliente save(Cliente cliente) {
-        clienteRepository.findByCuitDni(cliente.getDni()).ifPresent(c -> {
+        clienteRepository.findByDni(cliente.getDni()).ifPresent(c -> {
             throw new BusinessLogicException("Ya existe un cliente registrado con el documento: " + cliente.getDni());
         });
         validator.validarEmail(cliente.getEmail());

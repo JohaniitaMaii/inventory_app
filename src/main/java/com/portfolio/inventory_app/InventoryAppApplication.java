@@ -10,7 +10,11 @@ import java.sql.DriverManager;
 public class InventoryAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InventoryAppApplication.class, args);
+
+//		SpringApplication.run(InventoryAppApplication.class, args);
+		SpringApplication app = new SpringApplication(InventoryAppApplication.class);
+		app.setAllowBeanDefinitionOverriding(true);
+		app.run(args);
 	}
 
 }

@@ -20,14 +20,14 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class Empleado extends Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "puesto_id")
     @JsonIgnoreProperties("empleados")
     private Puesto puesto;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_ingreso")
-    private Date ingreso;
 
     @Column(unique = true)
     private String legajo;
@@ -37,7 +37,8 @@ public class Empleado extends Usuario {
 
     private String sucursal;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "informacion_laboral_id", nullable = false)
     private InformacionLaboral informacionLaboral;
 
     @Column(name = "objetivo_mensual")
@@ -45,12 +46,5 @@ public class Empleado extends Usuario {
 
     @Column(name = "obra_social")
     private String obraSocial;
-
-    @Column(unique= true,length = 22)
-    private String cbu;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_egreso")
-    private Date egreso;
 
 }
